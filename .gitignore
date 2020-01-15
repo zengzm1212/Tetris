@@ -4,4 +4,5 @@
 /source/Tetris/*.opendb
 /source/Tetris/x64
 /source/Tetris/.vs
+/source/Tetris/*.vs
 /source/Tetris/GeneratedFiles

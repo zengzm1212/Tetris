@@ -68,6 +68,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BirckSquare.cpp" />
+    <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="BrickInvL.cpp" />
+    <ClCompile Include="BrickInvZ.cpp" />
+    <ClCompile Include="BrickL.cpp" />
+    <ClCompile Include="BrickLine.cpp" />
+    <ClCompile Include="BrickT.cpp" />
+    <ClCompile Include="BrickUtils.cpp" />
+    <ClCompile Include="BrickZ.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_TetrisMainWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -81,7 +90,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TetrisEngine.cpp" />
     <ClCompile Include="TetrisMainWindow.cpp" />
+    <ClCompile Include="TetrisManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="TetrisMainWindow.h">
@@ -108,7 +119,19 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BirckSquare.h" />
+    <ClInclude Include="Brick.h" />
+    <ClInclude Include="BrickInvL.h" />
+    <ClInclude Include="BrickInvZ.h" />
+    <ClInclude Include="BrickL.h" />
+    <ClInclude Include="BrickLine.h" />
+    <ClInclude Include="BrickT.h" />
+    <ClInclude Include="BrickUtils.h" />
+    <ClInclude Include="BrickZ.h" />
     <ClInclude Include="GeneratedFiles\ui_TetrisMainWindow.h" />
+    <ClInclude Include="MacroDefines.h" />
+    <ClInclude Include="TetrisEngine.h" />
+    <ClInclude Include="TetrisManager.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="TetrisMainWindow.qrc">
