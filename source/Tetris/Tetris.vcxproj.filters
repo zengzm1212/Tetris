@@ -88,6 +88,18 @@
     <ClCompile Include="TetrisEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TetrisManager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TetrisManager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="TetrisMainWindow.h">
@@ -98,6 +110,9 @@
     </CustomBuild>
     <CustomBuild Include="TetrisMainWindow.qrc">
       <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TetrisManager.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -134,10 +149,13 @@
     <ClInclude Include="MacroDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TetrisManager.h">
+    <ClInclude Include="TetrisEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TetrisEngine.h">
+    <ClInclude Include="Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

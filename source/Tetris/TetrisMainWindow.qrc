@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="TetrisMainWindow">
+    <qresource prefix="/">
+        <file>images/box/box.png</file>
     </qresource>
 </RCC>

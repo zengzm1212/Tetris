@@ -6,3 +6,7 @@
 /source/Tetris/.vs
 /source/Tetris/*.vs
 /source/Tetris/GeneratedFiles
+/source/Tetris/*.suo
+/source/Tetris/*.filter
+/source/Tetris/*.vcxproj
+/source/Tetris/*.qrc
