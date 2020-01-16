@@ -2,9 +2,10 @@
 #include "MacroDefines.h"
 #include <QPainter>
 
-Box::Box(const QColor &color) 
+Box::Box(size_t row, size_t column, const QColor &color)
     : m_color(color)
 {
+    setPos(row * 20 + 45, column * 20 + 45);
 }
 
 Box::~Box()

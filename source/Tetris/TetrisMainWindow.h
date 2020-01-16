@@ -2,6 +2,10 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_TetrisMainWindow.h"
+#include "MacroDefines.h"
+
+class TetrisManager;
+class Box;
 
 class TetrisMainWindow : public QMainWindow
 {
@@ -25,6 +29,11 @@ public slots:
     void PauseGame();
     void RestartGame();
     void StopGame();
+    // 更新平移操作
+    void UpdateUiBoxPosition(EnKeyAction keyAction);
+    
+    void DisplayUiView();
+    void ClearUiView();
 
 private:
 	Ui::TetrisMainWindowClass* ui;
@@ -38,4 +47,10 @@ private:
     QGraphicsLineItem* m_leftLine;
     QGraphicsLineItem* m_buttomLine;
     QGraphicsLineItem* m_rightLine;
+
+    TetrisManager* m_pTetrisManager;
+    // 存储整个背景中需要显示的Box节点   用 pBackgroundBoxs[i*row+j]标志[i,j]位置处的节点
+    Box* m_pBackgroundBoxs[WINDOW_HEIGHT][WINDOW_WIDTH];
+    // 存储正在下落形状的4个方格
+    Box* m_p4Boxs[4];
 };

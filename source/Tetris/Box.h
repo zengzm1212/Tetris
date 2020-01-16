@@ -5,10 +5,10 @@
 // 为了避免同一个方块组内小方块发生碰撞，
 // 小方块的大小实际为19.5*19.5，但是小方块加上笔刷的宽度后为20 * 20
 
-class Box :  public QGraphicsObject   //a base class for all graphics items that require signals, slots and properties
+class Box :  public QGraphicsItem   //a base class for all graphics items that require signals, slots and properties
 {
 public:
-    Box(const QColor &color = Qt::red);
+    Box(size_t row, size_t column, const QColor &color = Qt::red);
     ~Box();
 
     //为项提供一个外围的边界矩形
