@@ -7,6 +7,7 @@ Brick::Brick()
     m_status = 0;
     m_row = 1;
     m_column = 3;
+    m_isFrozen = false;
 }
 
 Brick::~Brick()
@@ -15,7 +16,7 @@ Brick::~Brick()
 
 void Brick::Rotate()
 {
-    SetIndex(GetIndex() + 1);
+    SetIndex((GetIndex() + 1) % 4);
     UpdateStatus();
 }
 
@@ -23,5 +24,7 @@ Brick& Brick::operator=(Brick & euqal)
 {
     m_index = euqal.GetIndex();
     m_status = euqal.GetStatus();
+    m_row = euqal.GetBrickRow();
+    m_column = euqal.GetBrickColumn();
     return *this;
 }

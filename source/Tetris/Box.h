@@ -11,11 +11,13 @@ public:
     Box(size_t row, size_t column, const QColor &color = Qt::red);
     ~Box();
 
+    void SetColor(QColor color) { m_color = color; }
+
     //为项提供一个外围的边界矩形
     virtual QRectF boundingRect() const;
     //QGraphicsView调用，在本地坐标系统中绘制项
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
-    //重新定义项的形状，默认调用boundingRect获取项的矩形形状轮廓
+    //重新定义项的形状，默认调用boundingRect获取项的矩形形状轮廓    对于我这个程序来说没用，因为是自己进行相交性判断
     virtual QPainterPath shape() const;
 
 private:

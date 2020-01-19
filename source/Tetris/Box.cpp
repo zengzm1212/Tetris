@@ -5,7 +5,7 @@
 Box::Box(size_t row, size_t column, const QColor &color)
     : m_color(color)
 {
-    setPos(row * 20 + 45, column * 20 + 45);
+    setPos(column * 20 + 45, row * 20 + 45);  // 列对应的是X坐标
 }
 
 Box::~Box()
@@ -24,8 +24,8 @@ void Box::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
     //背景贴图
     painter->drawPixmap(-BOX_LENGTH / 2, -BOX_LENGTH / 2, BOX_LENGTH, BOX_LENGTH, QPixmap(":/images/box/box.png"));
     painter->setBrush(m_color);
-    //将方块的边界的颜色进行透明化
-    QColor penColor = m_color;
+
+    QColor penColor = Qt::black;     // 将边框的样色设置为黑色
     // 将颜色的透明度减小
     penColor.setAlpha(200);
     painter->setPen(penColor);

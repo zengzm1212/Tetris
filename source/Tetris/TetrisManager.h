@@ -5,6 +5,7 @@
 
 class QKeyEvent;
 class QTimer;
+class QGraphicsScene;
 
 class Brick;
 class TetrisEngine;
@@ -30,7 +31,8 @@ public:
     void StopGame();
 
 signals:
-    void UpdateBoxPosition(EnKeyAction keyAction);
+    void UpdateBoxPosition(EnKeyAction keyAction, Brick* pBrick);
+    void UpdateBoxUpPosition(Brick* pBrick);
 
 public slots:
     void MoveDownOneStep();
@@ -48,7 +50,6 @@ private: // 工具函数
 private:
     QTimer* m_pTimer;
     int** m_pBackgroundpMatrix;     // 背景矩阵
-    Brick* m_pBrick;                // 方块的数据
-    TetrisEngine* m_pTreisEngine;    // 具体操作数据的引起
+    Brick* m_pBrick;                // 正在移动的方块数据
 };
 

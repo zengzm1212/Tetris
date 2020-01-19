@@ -5,6 +5,7 @@
 
 #include <QKeyEvent>
 #include <QTimer>
+#include <QGraphicsScene>
 
 
 TetrisManager::TetrisManager()
@@ -18,8 +19,6 @@ TetrisManager::TetrisManager()
     m_pTimer->setInterval(TIME_INTERVAL);
     m_pTimer->setSingleShot(false);
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(MoveDownOneStep()));
-    // init engine
-    m_pTreisEngine = new TetrisEngine;
 }
 
 
@@ -31,8 +30,6 @@ TetrisManager::~TetrisManager()
         delete m_pBrick;
     if (m_pTimer)
         delete m_pTimer;
-    if (m_pTreisEngine)
-        delete m_pTreisEngine;
 }
 
 
@@ -56,13 +53,13 @@ void TetrisManager::ReactKeyEvent(QKeyEvent* e)
     switch (e->key())
     {
     case Qt::Key_Up:
-        Move(EnKeyAction::LEFT);
+        Move(EnKeyAction::UP);
         break;
     case Qt::Key_Left:
-        Move(EnKeyAction::RIGHT);
+        Move(EnKeyAction::LEFT);
         break;
     case Qt::Key_Right:
-        Move(EnKeyAction::UP);
+        Move(EnKeyAction::RIGHT);
         break;
     case Qt::Key_Down:
         Move(EnKeyAction::DOWN);
@@ -74,13 +71,20 @@ void TetrisManager::ReactKeyEvent(QKeyEvent* e)
 
 void TetrisManager::Move(EnKeyAction keyAction)
 {
-
-    m_pTimer->start();
+    TetrisEngine::KeyTransform(m_pBrick, keyAction);
+    //if (keyAction == EnKeyAction::UP)
+    //{
+    //    emit UpdateBoxUpPosition(m_pBrick);
+    //}
+    //else
+    {
+        emit UpdateBoxPosition(keyAction, m_pBrick);
+    }
 }
 
 void TetrisManager::StartGame()
 {
-    m_pTimer->start();
+    //m_pTimer->start();
 }
 void TetrisManager::PauseGame()
 {
@@ -96,11 +100,11 @@ void TetrisManager::StopGame()
 }
 void TetrisManager::MoveDownOneStep()
 {
-    if (!m_pTreisEngine->NextStepIsReasonable(m_pBackgroundpMatrix, m_pBrick, DOWN))
+    if (!TetrisEngine::NextStepIsReasonable(m_pBackgroundpMatrix, m_pBrick, DOWN))
     { // 条件判断中会执行一次操作，若不合理则撤回该操作
-        m_pTreisEngine->ReverseTransform(m_pBrick, DOWN);
-    }
-    emit UpdateBoxPosition(DOWN);
+        TetrisEngine::ReverseTransform(m_pBrick, DOWN);
+        //emit UpdateBoxPosition(DOWN);
+    }  
 }
 
 void TetrisManager::deleteMatrix(int** pMatrix)

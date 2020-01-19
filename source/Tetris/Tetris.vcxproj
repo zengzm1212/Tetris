@@ -74,7 +74,6 @@
   <ItemGroup>
     <ClCompile Include="BirckSquare.cpp" />
     <ClCompile Include="Box.cpp" />
-    <ClCompile Include="BoxGroup.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickInvL.cpp" />
     <ClCompile Include="BrickInvZ.cpp" />
@@ -134,7 +133,6 @@
   <ItemGroup>
     <ClInclude Include="BirckSquare.h" />
     <ClInclude Include="Box.h" />
-    <ClInclude Include="BoxGroup.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickInvL.h" />
     <ClInclude Include="BrickInvZ.h" />

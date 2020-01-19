@@ -27,5 +27,6 @@ private:
     int m_status;   //存储目前的图像信息
     int m_row;      // 行号，图形左下角的位置
     int m_column;   // 列号
+    bool m_isFrozen;// 是否处于冻结状态(冻结后便不可再移动)
 };
 
