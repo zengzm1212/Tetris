@@ -35,9 +35,11 @@ public slots:
     void ClearUiView();
 
 public:
-    void UpdateUiBoxPosition(EnKeyAction keyAction, Brick* pBrick);    // 下、左、右移后更新位置
-    void UpdateRotatedBoxPosition(Brick* pBrick);      // 旋转后更新位置
+    void UpdateUiBoxPosition(Brick* pBrick, EnKeyAction keyAction);    // 按键后更新位置
+    void ChangeUiBoxToBackground(Brick* pBrick);  // 将不能移动的物体变为背景
+
     void UpdateBackgroundBoxs();    // 更新背景
+    void DisplayMovingBricks();     // 显示移动的方块
 
 private:
 	Ui::TetrisMainWindowClass* ui;

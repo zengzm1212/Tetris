@@ -31,8 +31,10 @@ public:
     void StopGame();
 
 signals:
-    void UpdateBoxPosition(EnKeyAction keyAction, Brick* pBrick);
-    void UpdateBoxUpPosition(Brick* pBrick);
+    // 响应按键，更新方块位置
+    void UpdateBoxPosition(Brick* pBrick, EnKeyAction keyAction);
+    void ChangeBrickToBackground(Brick* pBrick);
+    void UpdateBackground();
 
 public slots:
     void MoveDownOneStep();

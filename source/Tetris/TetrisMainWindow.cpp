@@ -28,6 +28,19 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent)
     ui = new Ui::TetrisMainWindowClass();
 	ui->setupUi(this);
 
+    for (size_t i = 0; i < WINDOW_HEIGHT; ++i)
+    {
+        for (size_t j = 0; j < WINDOW_WIDTH; ++j)
+        {
+            m_pBackgroundBoxs[i*WINDOW_WIDTH + j] = nullptr;
+        }
+    }
+
+    for (size_t i = 0; i < 4; ++i)
+    {
+        m_p4Boxs[i] = nullptr;
+    }
+
     m_pTetrisManager = new TetrisManager;
 
     initGraphicsViewWidget();
@@ -45,12 +58,16 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent)
     //m_p4Boxs[3]->SetColor(Qt::blue);
     //m_scene->addItem(m_p4Boxs[3]);
 
-    DisplayUiView();
+    //DisplayUiView();
+    DisplayMovingBricks();
 
     //使得方块组支持键盘操作
     //setFlags(QGraphicsItem::ItemIsFocusable);
     setFocus();
     //setFocusPolicy();
+
+    // 初始化成员变量
+    
 
     // 绑定界面的按键
     connect(ui->m_startButton, SIGNAL(clicked()), this, SLOT(StartGame()));
@@ -58,9 +75,10 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent)
     connect(ui->m_restartButton, SIGNAL(clicked()), this, SLOT(RestartGame()));
     connect(ui->m_overButton, SIGNAL(clicked()), this, SLOT(StopGame()));
 
-    // 绑定与Mgr的信号传递
+    // 绑定按键的信号传递
     connect(m_pTetrisManager, &TetrisManager::UpdateBoxPosition, this, &TetrisMainWindow::UpdateUiBoxPosition);
-    connect(m_pTetrisManager, &TetrisManager::UpdateBoxUpPosition, this, &TetrisMainWindow::UpdateRotatedBoxPosition);
+    connect(m_pTetrisManager, &TetrisManager::ChangeBrickToBackground, this, &TetrisMainWindow::ChangeUiBoxToBackground);
+    connect(m_pTetrisManager, &TetrisManager::UpdateBackground, this, &TetrisMainWindow::UpdateBackgroundBoxs);
 }
 
 TetrisMainWindow::~TetrisMainWindow()
@@ -118,7 +136,7 @@ void TetrisMainWindow::StopGame()
     m_pTetrisManager->StopGame();
 }
 
-void TetrisMainWindow::UpdateUiBoxPosition(EnKeyAction keyAction, Brick* pBrick)
+void TetrisMainWindow::UpdateUiBoxPosition(Brick* pBrick, EnKeyAction keyAction)
 {
     //for (size_t i = 0; i < 4; ++i)
     //{
@@ -129,38 +147,14 @@ void TetrisMainWindow::UpdateUiBoxPosition(EnKeyAction keyAction, Brick* pBrick)
     //    else if(keyAction == EnKeyAction::RIGHT)
     //        m_p4Boxs[i]->moveBy(20, 0);
     //}
-    for (size_t i = 0; i < 4; ++i)
-    {
-        m_scene->removeItem(m_p4Boxs[i]);
-        delete m_p4Boxs[i]; //释放内存
-        m_p4Boxs[i] = nullptr;
-    }
-    bool currentBrick[4][4];
-    int num = 0;
-    ParseBrick(currentBrick, pBrick);
-    for (size_t i = 0; i < 4; ++i)
-    {
-        for (size_t j = 0; j < 4; ++j)
-        {
-            if (currentBrick[i][j] == 1)
-            {
-                m_p4Boxs[num] = new Box((pBrick->GetBrickRow() -3 + i), (pBrick->GetBrickColumn() + j));
-                m_scene->addItem(m_p4Boxs[num]);
-                num++;
-            }
-        }
-    }
-}
 
-void TetrisMainWindow::UpdateRotatedBoxPosition(Brick* pBrick)
-{
+    // 显示层所做的事情就是将DB层的数据显示出来
     for (size_t i = 0; i < 4; ++i)
     {
         m_scene->removeItem(m_p4Boxs[i]);
         delete m_p4Boxs[i]; //释放内存
         m_p4Boxs[i] = nullptr;
     }
-    //pBrick->Rotate();
     bool currentBrick[4][4];
     int num = 0;
     ParseBrick(currentBrick, pBrick);
@@ -206,7 +200,7 @@ void TetrisMainWindow::DisplayUiView()
             if (currentBrick[i][j])
             {
                 //转化成整体位置坐标
-                m_p4Boxs[num] = new Box(pBrick->GetBrickRow() -3 + i, pBrick->GetBrickColumn() + j);
+                m_p4Boxs[num] = new Box(pBrick->GetBrickRow() - 3 + i, pBrick->GetBrickColumn() + j);
                 m_scene->addItem(m_p4Boxs[num]);
                 num++;
             }
@@ -246,7 +240,7 @@ void TetrisMainWindow::UpdateBackgroundBoxs()
             {
                 if (!m_pBackgroundBoxs[i*WINDOW_WIDTH + j])
                 {
-                    m_pBackgroundBoxs[i*WINDOW_WIDTH + j] = new Box(i, j);
+                    m_pBackgroundBoxs[i*WINDOW_WIDTH + j] = new Box(i, j, Qt::blue);
                     m_scene->addItem(m_pBackgroundBoxs[i*WINDOW_WIDTH + j]);
                 }
             }
@@ -254,11 +248,39 @@ void TetrisMainWindow::UpdateBackgroundBoxs()
             {
                 if (m_pBackgroundBoxs[i*WINDOW_WIDTH + j])
                 {
+                    Box* pBox = m_pBackgroundBoxs[i*WINDOW_WIDTH + j];
                     m_scene->removeItem(m_pBackgroundBoxs[i*WINDOW_WIDTH + j]);
-                    delete m_pBackgroundBoxs[i*WINDOW_WIDTH + j]; // 释放内存，将指针置空
+                    //delete m_pBackgroundBoxs[i*WINDOW_WIDTH + j]; // 释放内存，将指针置空
                     m_pBackgroundBoxs[i*WINDOW_WIDTH + j] = nullptr;
                 }
             }
         }
     }
+}
+
+void TetrisMainWindow::DisplayMovingBricks()
+{
+    // 显示正在下落的Brick
+    int num = 0;
+    Brick* pBrick = m_pTetrisManager->GetBrick();
+    bool currentBrick[4][4];
+    for (size_t i = 0; i < 4; ++i)
+    {
+        for (size_t j = 0; j < 4; ++j)
+        {
+            currentBrick[i][j] = ((pBrick->GetStatus()) >> (12 - 4 * i + 3 - j)) & 1;  //[0,0]是左上角的点
+            if (currentBrick[i][j])
+            {
+                //转化成整体位置坐标
+                m_p4Boxs[num] = new Box(pBrick->GetBrickRow() - 3 + i, pBrick->GetBrickColumn() + j);
+                m_scene->addItem(m_p4Boxs[num]);
+                num++;
+            }
+        }
+    }
+}
+
+void TetrisMainWindow::ChangeUiBoxToBackground(Brick* pBrick)
+{
+
 }

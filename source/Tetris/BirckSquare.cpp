@@ -13,5 +13,5 @@ BirckSquare::~BirckSquare()
 
 void BirckSquare::UpdateStatus()
 {
-    SetStatus(0xCC00);
+    SetStatus(0x00CC);
 }
