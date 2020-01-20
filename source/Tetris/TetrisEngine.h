@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MacroDefines.h"
+#include <vector>
 
 class Brick;
 
@@ -18,6 +19,8 @@ public:
     // 将pBrick进行一步keyAction操作
     static void KeyTransform(Brick* pBrick, EnKeyAction keyAction);
     static void ReverseTransform(Brick* pBrick, EnKeyAction keyAction);
+
+    static bool ClearFullRow(int** pBackgroundMatrix);
 
 private:
     static bool IsBeyoundBoundary(Brick* pBrick);

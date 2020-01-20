@@ -3,15 +3,14 @@
 
 namespace
 {
-    void FindBackMatrix(int res[WINDOW_HEIGHT][WINDOW_WIDTH], int** pMatrix)
+    bool IsIntInVector(std::vector<int> vct, int n)
     {
-        for (size_t i = 0; i < WINDOW_HEIGHT; ++i)
+        for (std::vector<int>::iterator itor = vct.begin(); itor != vct.end(); ++itor)
         {
-            for (size_t j = 0; j < WINDOW_WIDTH; j++)
-            {
-                res[i][j] = pMatrix[i][j];
-            }
+            if (*itor == n)
+                return true;
         }
+        return false;
     }
 }
 
@@ -68,9 +67,6 @@ void TetrisEngine::ReverseTransform(Brick* pBrick, EnKeyAction keyAction)
 
 bool TetrisEngine::NextStepIsReasonable(int** pBackgroundMatrix, Brick* pBrick, EnKeyAction keyAction)
 {
-    int res[WINDOW_HEIGHT][WINDOW_WIDTH];
-    FindBackMatrix(res, pBackgroundMatrix);
-
     // 先进行一次操作，判断这次操作是否满足要求 
     KeyTransform(pBrick, keyAction);
     // 如果越界
@@ -120,4 +116,50 @@ bool TetrisEngine::IsBeyoundBoundary(Brick* pBrick)
         }
     }
     return false;
+}
+
+bool TetrisEngine::ClearFullRow(int** pBackgroundMatrix)
+{
+    std::vector<int> clearRows;
+    for (size_t i = 0; i < WINDOW_HEIGHT; ++i)
+    {
+        std::vector<int> rowBoxs;
+        for (size_t j = 0; j < WINDOW_WIDTH; ++j)
+        {
+            if (pBackgroundMatrix[i][j] == 1)
+                rowBoxs.push_back(pBackgroundMatrix[i][j]);
+        }
+        if (rowBoxs.size() == 10)
+        {
+            clearRows.push_back(i);
+        }
+    }
+    if (clearRows.size() == 0)
+        return false;
+
+    int clearRow = clearRows.back();       // 需要删除的行
+    int maintainRow = clearRow - 1; // 需要消除的行的上一行
+    for (; clearRow >= 0; --clearRow)
+    {
+        while (maintainRow >= 0)
+        {
+            if (IsIntInVector(clearRows, maintainRow))
+            {
+                maintainRow--;
+                continue;
+            }
+            for (size_t clearColumn = 0; clearColumn < WINDOW_WIDTH; ++clearColumn)
+            {
+                pBackgroundMatrix[clearRow][clearColumn] = pBackgroundMatrix[maintainRow][clearColumn];
+            }
+            maintainRow--;
+            clearRow--;
+        }
+        // 当上面的方块都落下后，落下后的空间用0填充
+        for (size_t clearColumn = 0; clearColumn < WINDOW_WIDTH; ++clearColumn)
+        {
+            pBackgroundMatrix[clearRow][clearColumn] = 0;
+        }
+    }
+    return true;
 }

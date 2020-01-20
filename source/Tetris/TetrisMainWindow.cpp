@@ -77,7 +77,6 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent)
 
     // 绑定按键的信号传递
     connect(m_pTetrisManager, &TetrisManager::UpdateBoxPosition, this, &TetrisMainWindow::UpdateUiBoxPosition);
-    connect(m_pTetrisManager, &TetrisManager::ChangeBrickToBackground, this, &TetrisMainWindow::ChangeUiBoxToBackground);
     connect(m_pTetrisManager, &TetrisManager::UpdateBackground, this, &TetrisMainWindow::UpdateBackgroundBoxs);
 }
 
@@ -148,6 +147,7 @@ void TetrisMainWindow::UpdateUiBoxPosition(Brick* pBrick, EnKeyAction keyAction)
     //        m_p4Boxs[i]->moveBy(20, 0);
     //}
 
+    setFocus();
     // 显示层所做的事情就是将DB层的数据显示出来
     for (size_t i = 0; i < 4; ++i)
     {
@@ -278,9 +278,4 @@ void TetrisMainWindow::DisplayMovingBricks()
             }
         }
     }
-}
-
-void TetrisMainWindow::ChangeUiBoxToBackground(Brick* pBrick)
-{
-
 }

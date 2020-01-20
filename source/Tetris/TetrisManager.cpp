@@ -104,6 +104,7 @@ void TetrisManager::Move(EnKeyAction keyAction)
                     }
                 }
             }
+            TetrisEngine::ClearFullRow(m_pBackgroundpMatrix);
             emit UpdateBackground();
             delete m_pBrick;
             m_pBrick = BrickUtils::CreateBrick();
@@ -119,7 +120,7 @@ void TetrisManager::Move(EnKeyAction keyAction)
 
 void TetrisManager::StartGame()
 {
-    //m_pTimer->start();
+    m_pTimer->start();
 }
 void TetrisManager::PauseGame()
 {
@@ -135,11 +136,7 @@ void TetrisManager::StopGame()
 }
 void TetrisManager::MoveDownOneStep()
 {
-    if (TetrisEngine::NextStepIsReasonable(m_pBackgroundpMatrix, m_pBrick, DOWN))
-    { // 条件判断中会执行一次操作，若不合理则撤回该操作
-        TetrisEngine::KeyTransform(m_pBrick, DOWN);
-        emit UpdateBoxPosition(m_pBrick, DOWN);
-    }  
+    Move(EnKeyAction::DOWN);
 }
 
 void TetrisManager::deleteMatrix(int** pMatrix)
